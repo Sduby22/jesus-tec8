@@ -79,6 +79,7 @@ architecture arch of control_unit is
             SHORT <= '0';
             LONG <= '0';
             SST0 <= '0';
+            S <= "0000";
 
             -- 如果SST0被置位，则置位ST0
             -- 按下了CLR，应将SST0置1.
@@ -278,7 +279,7 @@ architecture arch of control_unit is
                                     M <= '1';
                                 end if;
                                 ABUS <= W(1);
-                                DRW <= W(1;
+                                DRW <= W(1);
                                 LDZ <= W(1);
                                 LIR <= W(1);
                                 PCINC <= W(1);
@@ -286,12 +287,22 @@ architecture arch of control_unit is
                             when "1100" =>
                                 -- XOR a,b (a^b -> a)
                                 if (W(1) = '1') then
-                                    M <= 1;
+                                    M <= '1';
                                     S <= "1001";
                                 end if;
                                 ABUS <= W(1);
                                 DRW <= W(1);
                                 LDZ <= W(1);
+                                LIR <= W(1);
+                                PCINC <= W(1);
+                                SHORT <= W(1);
+                            when "1101" =>
+                                -- OUT a (a -> DBUS)
+                                if (W(1) = '1') then
+                                    S <= "1010"; -- 直通 B
+                                    M <= '1';
+                                end if;
+                                ABUS <= W(1);
                                 LIR <= W(1);
                                 PCINC <= W(1);
                                 SHORT <= W(1);
